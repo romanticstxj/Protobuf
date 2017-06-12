@@ -23,6 +23,7 @@ public class DataFileReader<T> {
 
     public boolean open(File file) {
         try {
+            this.close();
             this.inputStream = new BufferedInputStream(new FileInputStream(file));
             return true;
         } catch (Exception ex) {
@@ -47,8 +48,9 @@ public class DataFileReader<T> {
                 if (len > 0) {
                     byte[] data = new byte[len];
                     if (this.inputStream.read(data) >= data.length) {
-                        this.nextData = (T)this.parseFrom.invoke(null, data);
-                        return true;
+                        if ((this.nextData = (T)this.parseFrom.invoke(null, data)) != null) {
+                            return true;
+                        }
                     }
                 }
             }

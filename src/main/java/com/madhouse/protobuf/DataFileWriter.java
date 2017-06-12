@@ -54,10 +54,10 @@ public class DataFileWriter<T> {
 
     }
 
-    public boolean create(File file) {
+    public boolean create(File file, boolean append) {
         try {
             this.close();
-            this.outputStream = new BufferedOutputStream(new FileOutputStream(file));
+            this.outputStream = new BufferedOutputStream(new FileOutputStream(file, append));
             return true;
 
         } catch (Exception ex) {

@@ -3,7 +3,6 @@ package com.madhouse.protobuf;
 import com.google.protobuf.GeneratedMessage;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -52,6 +51,10 @@ public class DataFileWriter<T> {
             System.out.println(ex.toString());
         }
 
+    }
+
+    public boolean create(File file) {
+        return this.create(file, false);
     }
 
     public boolean create(File file, boolean append) {

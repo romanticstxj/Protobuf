@@ -27,7 +27,7 @@ public class DataFileReader<T> {
             this.inputStream = new BufferedInputStream(new FileInputStream(file));
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
             return false;
         }
     }
@@ -57,7 +57,7 @@ public class DataFileReader<T> {
 
             return false;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
             return false;
         }
     }
@@ -70,7 +70,7 @@ public class DataFileReader<T> {
                 this.inputStream = null;
             }
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
         }
     }
 }

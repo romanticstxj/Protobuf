@@ -34,7 +34,7 @@ public class DataFileWriter<T> {
 
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
             return false;
         }
     }
@@ -48,7 +48,7 @@ public class DataFileWriter<T> {
                 this.outputStream = null;
             }
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
         }
 
     }
@@ -64,7 +64,7 @@ public class DataFileWriter<T> {
             return true;
 
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            System.err.println(ex.toString());
             return false;
         }
     }

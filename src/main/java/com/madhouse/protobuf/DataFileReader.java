@@ -1,6 +1,7 @@
 package com.madhouse.protobuf;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
 public class DataFileReader<T> {
     private T nextData = null;
     private Method parseFrom = null;
-    private BufferedInputStream inputStream = null;
+    private DataInputStream dataInputStream = null;
 
     public DataFileReader(Class<T> c) {
         try {
@@ -24,7 +25,7 @@ public class DataFileReader<T> {
     public boolean open(File file) {
         try {
             this.close();
-            this.inputStream = new BufferedInputStream(new FileInputStream(file));
+            this.dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
             return true;
         } catch (Exception ex) {
             System.err.println(ex.toString());
@@ -38,19 +39,16 @@ public class DataFileReader<T> {
 
     public boolean hasNext() {
         try {
-            if (this.inputStream == null || this.parseFrom == null) {
+            if (this.dataInputStream == null || this.parseFrom == null) {
                 return false;
             }
 
-            byte[] size = new byte[4];
-            if (this.inputStream.read(size) >= size.length) {
-                int len = size[0] | (size[1] << 8) | (size[2] << 16) | (size[3] << 24);
-                if (len > 0) {
-                    byte[] data = new byte[len];
-                    if (this.inputStream.read(data) >= data.length) {
-                        if ((this.nextData = (T)this.parseFrom.invoke(null, data)) != null) {
-                            return true;
-                        }
+            int len = 0;
+            if ((len = this.dataInputStream.readInt()) > 0) {
+                byte[] data = new byte[len];
+                if (this.dataInputStream.read(data) >= data.length) {
+                    if ((this.nextData = (T)this.parseFrom.invoke(null, data)) != null) {
+                        return true;
                     }
                 }
             }
@@ -65,9 +63,9 @@ public class DataFileReader<T> {
     public void close() {
 
         try {
-            if (this.inputStream != null) {
-                this.inputStream.close();
-                this.inputStream = null;
+            if (this.dataInputStream != null) {
+                this.dataInputStream.close();
+                this.dataInputStream = null;
             }
         } catch (Exception ex) {
             System.err.println(ex.toString());

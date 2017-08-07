@@ -39,16 +39,14 @@ public class DataFileReader<T> {
 
     public boolean hasNext() {
         try {
-            if (this.dataInputStream == null || this.parseFrom == null) {
-                return false;
-            }
-
-            int len = 0;
-            if ((len = this.dataInputStream.readInt()) > 0) {
-                byte[] data = new byte[len];
-                if (this.dataInputStream.read(data) >= data.length) {
-                    if ((this.nextData = (T)this.parseFrom.invoke(null, data)) != null) {
-                        return true;
+            if (this.dataInputStream != null && this.parseFrom != null) {
+                int len = 0;
+                if ((len = this.dataInputStream.readInt()) > 0) {
+                    byte[] data = new byte[len];
+                    if (this.dataInputStream.read(data) >= data.length) {
+                        if ((this.nextData = (T)this.parseFrom.invoke(null, data)) != null) {
+                            return true;
+                        }
                     }
                 }
             }
